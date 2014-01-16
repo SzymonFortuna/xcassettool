@@ -1,0 +1,45 @@
+#!/bin/bash
+#creating folder
+#author Szymon Fortuna 
+# www.presspadapp.com
+
+if [ "$#" == "0" ]; then
+	echo "Usage: $0 foldername"
+	exit 0
+fi
+foldername=${1%/}
+if [ "$#" == "1" ]; then
+	iconFile=$foldername"/1024.png"
+fi
+appIconPath=$foldername".xcassets/AppIcon.appiconset"
+launchImagePath=$foldername".xcassets/LaunchImage.launchimage"
+mkdir -p $foldername".xcassets" $appIconPath $launchImagePath
+#converting icons to proper size
+sips -z 29 29 $iconFile --out $appIconPath/Icon-Small.png
+sips -z 58 58 $iconFile --out $appIconPath/Icon-Small@2x.png
+sips -z 57 57 $iconFile --out $appIconPath/Icon.png
+sips -z 114 114 $iconFile --out $appIconPath/Icon@2x.png
+sips -z 120 120 $iconFile --out $appIconPath/Icon-60@2x.png
+sips -z 40 40 $iconFile --out $appIconPath/Icon-40.png
+sips -z 80 80 $iconFile --out $appIconPath/Icon-40@2x.png
+sips -z 50 50 $iconFile --out $appIconPath/Icon-Small-50.png
+sips -z 100 100 $iconFile --out $appIconPath/Icon-Small-50@2x.png
+sips -z 72 72 $iconFile --out $appIconPath/Icon-72.png
+sips -z 144 144 $iconFile --out $appIconPath/Icon-72@2x.png
+sips -z 76 76 $iconFile --out $appIconPath/Icon-76.png
+sips -z 152 152 $iconFile --out $appIconPath/Icon-76@2x.png
+#copying splashscreens
+cp $foldername/Default@2x.png $launchImagePath/Default@2x.png
+cp $foldername/Default-568h@2x.png $launchImagePath/Default-568h@2x.png
+cp $foldername/Default-Landscape@2x~ipad.png $launchImagePath/Default-Landscape@2x~ipad.png
+cp $foldername/Default-Portrait@2x~ipad.png $launchImagePath/Default-Portrait@2x~ipad.png
+#converting splashcreens
+sips -z 480 320 $foldername/Default@2x.png --out $launchImagePath/Default.png
+sips -z 1024 768 $foldername/Default-Portrait@2x~ipad.png --out $launchImagePath/Default-Portrait~ipad.png
+sips -z 768 1024 $foldername/Default-Landscape@2x~ipad.png --out $launchImagePath/Default-Landscape~ipad.png
+
+#copy json info files
+cp Contents_appiconset.json $appIconPath/Contents.json
+cp Contents_launchimage.json $launchImagePath/Contents.json
+#####
+clear
